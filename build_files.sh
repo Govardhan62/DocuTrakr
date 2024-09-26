@@ -1,3 +1,4 @@
-pip3 install -r requirements.txt
+#!/bin/bash
 
-python3.12  manage.py collectstatic
+pip install -r requirements.txt
+python manage.py collectstatic --noinput
