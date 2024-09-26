@@ -20,3 +20,12 @@ reportlab==4.2.2
 sqlparse==0.2.4
 typing_extensions==4.12.2
 tzdata==2024.1
+whitenoise==6.4
+python-dotenv==1.0.1
+python-decouple==3.7
+boto3==1.26.0
+django-storages==1.13.2
+email-validator
+waitress==3.0.0
+gunicorn==20.1.0
+psycopg2-binary==2.9.6
