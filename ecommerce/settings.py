@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import dj_database_url
 from pathlib import Path
 import os
 
@@ -89,6 +89,8 @@ DATABASES = {
         'HOST':'localhost'
     }
 }
+
+DATABASES['default'] =dj_database_url.parse("postgresql://pretty_django_rq0z_user:rCAfWSNfchPGTOfE0yYE5joBCrcRtsOi@dpg-crqnv8bv2p9s73e79v2g-a.oregon-postgres.render.com/pretty_django_rq0z")
 
 
 # Password validation
