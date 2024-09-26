@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Text</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            margin-top: 60px;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #343a40;
+            font-size: 2rem;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #f1f3f5;
+            padding: 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: #495057;
+            line-height: 1.6;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-primary {
+            background-color: #007bff;
+        }
+        .btn-primary:hover, .btn-secondary:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Document Text</h1>
+        <pre>{{ text }}</pre>
+        <div class="btn-container">
+            <a href="{% url 'process_document' %}" class="btn btn-secondary">Back to Upload</a>
+            <a href="{% url 'download_as_pdf' document_id=document_id %}" class="btn btn-primary">Download as PDF</a>
+            <a href="{% url 'download_as_docx' document_id=document_id %}" class="btn btn-primary">Download as DOCX</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
