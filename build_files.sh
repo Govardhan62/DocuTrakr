@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Install dependencies
+apt-get install -y libpq-dev
 pip install -r requirements.txt
-
-# Collect static files
 python manage.py collectstatic --noinput
