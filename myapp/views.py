@@ -41,7 +41,6 @@ def extract_text_from_image(file):
     return text
 
 @csrf_exempt
-@login_required
 def process_document(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
