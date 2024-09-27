@@ -83,14 +83,14 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'DocuTrakr',
+        'NAME': 'Docu',
         'USER' :'postgres',
         'PASSWORD':'12345',
         'HOST':'localhost'
     }
 }
 
-DATABASES['default'] =dj_database_url.parse("postgresql://pretty_django_rq0z_user:rCAfWSNfchPGTOfE0yYE5joBCrcRtsOi@dpg-crqnv8bv2p9s73e79v2g-a.oregon-postgres.render.com/pretty_django_rq0z")
+DATABASES['default'] =dj_database_url.parse("postgresql://pretty_django_rq0z_user:rCAfWSNfchPGTOfE0yYE5joBCrcRtsOi@dpg-crqnv8bv2p9s73e79v2g-a.oregon-postgres.render.com/Docutrakr")
 
 
 # Password validation

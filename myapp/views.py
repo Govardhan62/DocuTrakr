@@ -5,6 +5,8 @@ from .models import Document
 import docx # type: ignore
 import pdfplumber # type: ignore
 import pytesseract # type: ignore
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from PIL import Image,ImageEnhance, ImageFilter
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
@@ -38,11 +40,14 @@ def extract_text_from_image(file):
     
     return text
 
+@csrf_exempt
+@login_required
 def process_document(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit=False)
+            document.user = request.user
             document.created_at = datetime.now()  
             document = form.save()
             file_path = document.file.path
@@ -64,7 +69,8 @@ def process_document(request):
             return render(request, 'document_text.html', {'text': text, 'document_id': document.id})
     else:
         form = DocumentForm()
-    documents = Document.objects.all()
+     # Show only documents belonging to the logged-in user
+    documents = Document.objects.filter(user=request.user)
     context ={
             'form': form,
             'documents':documents     
@@ -73,10 +79,9 @@ def process_document(request):
     return render(request, 'upload_document.html', context)
 
 def view_document(request, document_id):
-    document = Document.objects.get(id=document_id)
+    # Ensure the document belongs to the logged-in user
+    document = get_object_or_404(Document, id=document_id, user=request.user)
     return render(request, 'document_text.html', {'text': document.converted_text, 'document_id': document_id})
-
-
 
 
 
@@ -139,4 +144,7 @@ def delete_document(request, document_id):
 
 def demo(request,extension=None):
     return render(request,'404.html')
+
+def home(request):
+    return render(request,'login.html')
 
