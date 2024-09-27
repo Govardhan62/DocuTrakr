@@ -108,7 +108,18 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-        <a class="navbar-brand mx-auto" href="#">Docu Trakr</a>
+        <center><a class="navbar-brand mx-auto" href="#">Docu Trakr</a></center>
+
+         <!-- Right-aligned content -->
+    <div class="ml-auto">
+        <!-- Check if the user is logged in -->
+        {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post" class="form-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light">Logout</button>
+        </form>
+        {% endif %}
+    </div>
     </nav>
 
     <div class="container upload-section">
