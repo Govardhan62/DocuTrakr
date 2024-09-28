@@ -92,12 +92,10 @@ DATABASES = {
 
 DATABASES = {
     'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://pretty_django_rq0z_user:rCAfWSNfchPGTOfE0yYE5joBCrcRtsOi@dpg-crqnv8bv2p9s73e79v2g-a.oregon-postgres.render.com/Docutrakr',
+        default=os.environ.get('DATABASE_URL'),  # Render will provide the DATABASE_URL
         conn_max_age=600
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
