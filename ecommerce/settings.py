@@ -90,8 +90,13 @@ DATABASES = {
     }
 }
 
-database_url =os.environ.get("DATABASE_URL")
-DATABASES['default'] =dj_database_url.parse(database_url)
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://pretty_django_rq0z_user:rCAfWSNfchPGTOfE0yYE5joBCrcRtsOi@dpg-crqnv8bv2p9s73e79v2g-a.oregon-postgres.render.com/Docutrakr',
+        conn_max_age=600
+    )
+}
 
 
 # Password validation
