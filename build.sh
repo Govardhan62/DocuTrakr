@@ -4,7 +4,7 @@
 apt-get update
 
 # Install Tesseract OCR
-apt-get install -y tesseract-ocr tesseract-ocr-eng libtesseract-dev libleptonica-dev
+apt-get update && apt-get install -y tesseract-ocr
 
 # Optionally install additional languages (if needed)
 # apt-get install -y tesseract-ocr-fra tesseract-ocr-deu
