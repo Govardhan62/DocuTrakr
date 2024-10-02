@@ -1,4 +1,5 @@
-from datetime import datetime  
+from datetime import datetime
+import os  
 from django.shortcuts import get_object_or_404, render, redirect
 from .forms import DocumentForm
 from .models import Document
@@ -10,6 +11,9 @@ from django.contrib.auth.decorators import login_required
 from PIL import Image,ImageEnhance, ImageFilter
 
 #pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Get Tesseract path from environment variable
+tesseract_path = os.getenv('TESSERACT_PATH', '/usr/bin/tesseract')  # Default to '/usr/bin/tesseract' if not set
+pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 def extract_text_from_pdf(file):
     text = ""
