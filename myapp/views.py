@@ -140,6 +140,7 @@ def download_as_docx(request, document_id):
 
 from django.contrib import messages
 
+@csrf_exempt
 def delete_document(request, document_id):
     document = get_object_or_404(Document, id=document_id)
     document.delete()
