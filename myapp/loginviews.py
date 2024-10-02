@@ -49,6 +49,7 @@ def login(request):
 from django.contrib.auth import logout
 
 @login_required
+@csrf_exempt
 def logout(request):
     auth.logout(request)
     return redirect('/')  # Redirect to the login page
