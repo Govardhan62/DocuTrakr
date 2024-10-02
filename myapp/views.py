@@ -12,7 +12,7 @@ from PIL import Image,ImageEnhance, ImageFilter
 
 #pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 # Get Tesseract path from environment variable
-tesseract_path = os.getenv('TESSERACT_PATH', '/usr/bin/tesseract')  # Default to '/usr/bin/tesseract' if not set
+tesseract_path = os.getenv('TESSERACT_PATH', 'Tesseract-OCR\tesseract.exe')  # Default to '/usr/bin/tesseract' if not set
 pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 def extract_text_from_pdf(file):
