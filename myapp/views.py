@@ -8,7 +8,7 @@ import pytesseract # type: ignore
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from PIL import Image,ImageEnhance, ImageFilter
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+#pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 def extract_text_from_pdf(file):
     text = ""

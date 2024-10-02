@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# Build the project
-echo "Building the project..."
-python3.9 -m pip install -r requirements.txt
+# Update the package lists
+apt-get update
 
-echo "Make Migration..."
-python3.9 manage.py makemigrations --noinput
-python3.9 manage.py migrate --noinput
+# Install Tesseract
+apt-get install -y tesseract-ocr
 
-echo "Collect Static..."
-python3.9 manage.py collectstatic --noinput --clear
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Collect static files
+python manage.py collectstatic --no-input
