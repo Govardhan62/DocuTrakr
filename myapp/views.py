@@ -9,11 +9,10 @@ import pytesseract # type: ignore
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from PIL import Image,ImageEnhance, ImageFilter
-
-#pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-# Get Tesseract path from environment variable
-tesseract_path = os.getenv('TESSERACT_PATH', '/usr/bin/tesseract')  # Default to '/usr/bin/tesseract' if not set
-pytesseract.pytesseract.tesseract_cmd = tesseract_path
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+ # Get Tesseract path from environment variable
+# tesseract_path = os.getenv('TESSERACT_PATH', '/usr/bin/tesseract')  # Default to '/usr/bin/tesseract' if not set
+# pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 def extract_text_from_pdf(file):
     text = ""
@@ -30,20 +29,33 @@ def extract_text_from_docx(file):
 def extract_text_from_image(file):
     image = Image.open(file)
     
-    # Convert the image to grayscale
-    gray_image = image.convert('L')
+    # Convert to grayscale (mode 'L')
+    if image.mode != 'L':
+        gray_image = image.convert('L')
+    else:
+        gray_image = image
     
-    # Enhance the image contrast
-    enhancer = ImageEnhance.Contrast(gray_image)
-    enhanced_image = enhancer.enhance(2)
+    # Rescale the image to improve OCR accuracy (scaling factor 2.0)
+    rescaled_image = gray_image.resize((int(gray_image.width * 2), int(gray_image.height * 2)), Image.Resampling.LANCZOS)
     
-    # Apply a filter to remove noise
-    filtered_image = enhanced_image.filter(ImageFilter.MedianFilter())
+    # Enhance image contrast before binarization
+    enhancer = ImageEnhance.Contrast(rescaled_image)
+    enhanced_image = enhancer.enhance(2.5)
     
-    # Perform OCR using Tesseract
-    text = pytesseract.image_to_string(filtered_image, lang='eng', config='--psm 6')
+    # Apply adaptive thresholding to binarize the image
+    binary_image = enhanced_image.point(lambda x: 0 if x < 128 else 255, '1')
+    
+    # Apply a median filter to reduce noise
+    filtered_image = binary_image.filter(ImageFilter.MedianFilter(size=3))
+    
+    # Perform OCR using Tesseract with different configurations for better accuracy
+    custom_config = r'--oem 3 --psm 6'
+    text = pytesseract.image_to_string(filtered_image, lang='eng', config=custom_config)
     
     return text
+
+
+
 
 @csrf_exempt
 def process_document(request):
