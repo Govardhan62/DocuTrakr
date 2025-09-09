@@ -21,13 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = os.environ.get("SECRET_KEY")
 
-#SECRET_KEY = 'django-insecure-r(vctop4h_)2ciq#!38tr(bsr^qoyr%t$7*buweve1ikl=&1%0'
+SECRET_KEY = 'django-insecure-r(vctop4h_)2ciq#!38tr(bsr^qoyr%t$7*buweve1ikl=&1%0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG","False").lower() =="true"
-#DEBUG =True
+#DEBUG = os.environ.get("DEBUG","False").lower() =="true"
+DEBUG =True
 
 # ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 ALLOWED_HOSTS =['*']
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp.apps.MyappConfig',
+    'tailwind',
+    'theme',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 
@@ -84,22 +87,29 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Docu',
-        'USER' :'postgres',
-        'PASSWORD':'12345',
-        'HOST':'localhost'
-    }
-}
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),  # Render will provide the DATABASE_URL
-        conn_max_age=600
-    )
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
+    }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'Docu',
+#         'USER' :'postgres',
+#         'PASSWORD':'12345',
+#         'HOST':'localhost'
+#     }
+# }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('DATABASE_URL'),  # Render will provide the DATABASE_URL
+#         conn_max_age=600
+#     )
+# }
 
 # DATABASES = {
 #     'default': dj_database_url.config(
@@ -171,3 +181,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL ='/media/'
 MEDIA_ROOT =os.path.join(BASE_DIR,'media')
+
+TAILWIND_APP_NAME = 'theme'
+
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+
+
+if DEBUG:
+    # Add django_browser_reload only in DEBUG mode
+    INSTALLED_APPS += ['django_browser_reload']

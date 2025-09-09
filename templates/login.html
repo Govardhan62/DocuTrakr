@@ -1,84 +1,215 @@
-{% load static %}
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Signup</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/media/icons/doc.png" type="image/png" />
+  <title>Login / Signup - Hacker Mode</title>
+  {% tailwind_css %}
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Share Tech Mono', monospace;
+      background-color: #000;
+      color: #00ff41;
+    }
+    .neon-text {
+      color: #00ff41;
+      text-shadow:
+        0 0 5px #00ff41,
+        0 0 10px #00ff41,
+        0 0 20px #00ff41;
+    }
+    .neon-border {
+      border: 2px solid #00ff41;
+      box-shadow:
+        0 0 8px #00ff41 inset,
+        0 0 10px #00ff41;
+    }
+    .input-glow:focus {
+      outline: none;
+      box-shadow: 0 0 8px #00ff41, 0 0 20px #00ff41;
+      border-color: #00ff41;
+    }
+    .tab-active {
+      color: #00ff41 !important;
+      border-bottom: 3px solid #00ff41 !important;
+      font-weight: 700;
+      text-shadow:
+        0 0 5px #00ff41,
+        0 0 10px #00ff41;
+    }
+    .tab-inactive {
+      color: #004d00;
+      border-bottom: 3px solid transparent;
+      transition: color 0.3s;
+    }
+    .tab-inactive:hover {
+      color: #008000;
+      border-bottom: 3px solid #006600;
+    }
+    button:hover {
+      filter: drop-shadow(0 0 5px #00ff41);
+    }
+    
+  </style>
 </head>
-<body>
-    <br><br>
-    <div class="cont">
-        <div class="form sign-in">
-            <h2>Welcome</h2>
-            <form method="POST" action="{% url 'login' %}">
-                {% csrf_token %}
-                <label>
-                    <span>Username</span>
-                    <input type="text" name="username" required/>
-                </label>
-                <label>
-                    <span>Password</span>
-                    <input type="password" name="password" required/>
-                </label>
-                <p class="forgot-pass"><a href="#">Forgot password?</a></p>
-                <button type="submit" class="submit">Sign In</button>
-            </form>
-        </div>
+<body class="min-h-screen flex items-center justify-center p-6 bg-black">
+  
+  
 
-        <div class="sub-cont">
-            <div class="img">
-                <div class="img__text m--up">
-                    <h3>Don't have an account? Please Sign up!</h3>
-                </div>
-                <div class="img__text m--in">
-                    <h3>If you already have an account, just sign in.</h3>
-                </div>
-                <div class="img__btn">
-                    <span class="m--up">Sign Up</span>
-                    <span class="m--in">Sign In</span>
-                </div>
-            </div>
-
-            <div class="form sign-up">
-                <h2>Create your Account</h2>
-                <form method="POST" action="{% url 'signup' %}">
-                    {% csrf_token %}
-                    <label>
-                        <span>Name</span>
-                        <input type="text" name="firstname" required/>
-                    </label>
-                    <label>
-                        <span>Username</span>
-                        <input type="text" name="username" required/>
-                    </label>
-                    <label>
-                        <span>Password</span>
-                        <input type="password" name="password" required/>
-                    </label>
-                    <button type="submit" class="submit">Sign Up</button>
-                </form>
-            </div>
+  <!-- Glass Card -->
+  <div class="w-full max-w-md bg-black/80 neon-border backdrop-blur-lg rounded-2xl p-8">
+    <!-- Error messages go here -->
+  {% if messages %}
+  <div class="mb-8 mx-auto max-w-full w-[90%] 
+              bg-black/80 border-2 border-[#00ff41] rounded-xl
+              shadow-[0_0_16px_#00ff41] text-[#00ff41]
+              font-mono font-semibold text-sm tracking-wide
+              px-6 py-3">
+    {% for message in messages %}
+      {% if message.tags == 'error' %}
+        <div class="flex justify-between items-center">
+          <span>{{ message }}</span>
+          <button onclick="this.parentElement.parentElement.remove(); setTimeout(() => location.reload(), 200);"
+                  class="ml-6 text-lg font-bold cursor-pointer hover:text-[#00ff41]/80"
+                  aria-label="Close">
+            &times;
+          </button>
         </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+    <!-- Tabs -->
+    <div class="flex justify-center mb-8 select-none">
+      <button id="loginTab" class="w-1/2 py-2 text-center tab-active transition">Sign In</button>
+      <button id="signupTab" class="w-1/2 py-2 text-center tab-inactive transition">Sign Up</button>
     </div>
 
-    <!-- Display Django messages -->
-    {% if messages %}
-        <div>
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    <!-- Login Form -->
+    <div id="loginForm" class="animate-fade-in">
+      
+      <h2 class="text-2xl neon-text mb-2 text-center font-bold">Welcome Back 👋</h2>
+      <p class="text-green-400 text-center mb-6 text-sm">Please sign in to continue</p>
 
-    <!-- Toggle between sign-in and sign-up forms -->
-    <script>
-        document.querySelector('.img__btn').addEventListener('click', function() {
-            document.querySelector('.cont').classList.toggle('s--signup');
-        });
-    </script>
+      <form method="POST" action="{% url 'login' %}" class="space-y-5">
+        {% csrf_token %}
+        <div>
+          <label class="block text-green-400 mb-1 text-sm font-semibold">Username</label>
+          <input
+            type="text"
+            name="username"
+            required
+            class="input-glow w-full px-4 py-3 rounded-lg bg-black/30 border border-green-600 placeholder-green-500 text-green-300 focus:ring-0 focus:border-green-400 transition"
+            placeholder="hacker123"
+          />
+        </div>
+        <div>
+          <label class="block text-green-400 mb-1 text-sm font-semibold">Password</label>
+          <input
+            type="password"
+            name="password"
+            required
+            class="input-glow w-full px-4 py-3 rounded-lg bg-black/30 border border-green-600 placeholder-green-500 text-green-300 focus:ring-0 focus:border-green-400 transition"
+            placeholder="••••••••"
+          />
+        </div>
+        <div class="flex justify-between items-center">
+          <a href="#" class="text-green-500 hover:underline text-sm font-semibold">Forgot password?</a>
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-green-700 to-green-500 neon-text py-3 rounded-xl font-bold hover:brightness-125 transition shadow-lg drop-shadow-neon"
+        >
+          Sign In
+        </button>
+      </form>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" class="hidden animate-fade-in">
+      <h2 class="text-2xl neon-text mb-2 text-center font-bold">Create Account ✨</h2>
+      <p class="text-green-400 text-center mb-6 text-sm">Join us today and get started</p>
+
+      <form method="POST" action="{% url 'signup' %}" class="space-y-5">
+        {% csrf_token %}
+        <div>
+          <label class="block text-green-400 mb-1 text-sm font-semibold">Name</label>
+          <input
+            type="text"
+            name="firstname"
+            required
+            class="input-glow w-full px-4 py-3 rounded-lg bg-black/30 border border-green-600 placeholder-green-500 text-green-300 focus:ring-0 focus:border-green-400 transition"
+          />
+        </div>
+        <div>
+          <label class="block text-green-400 mb-1 text-sm font-semibold">Username</label>
+          <input
+            type="text"
+            name="username"
+            required
+            class="input-glow w-full px-4 py-3 rounded-lg bg-black/30 border border-green-600 placeholder-green-500 text-green-300 focus:ring-0 focus:border-green-400 transition"
+          />
+        </div>
+        <div>
+          <label class="block text-green-400 mb-1 text-sm font-semibold">Password</label>
+          <input
+            type="password"
+            name="password"
+            required
+            class="input-glow w-full px-4 py-3 rounded-lg bg-black/30 border border-green-600 placeholder-green-500 text-green-300 focus:ring-0 focus:border-green-400 transition"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-green-700 to-green-500 neon-text py-3 rounded-xl font-bold hover:brightness-125 transition shadow-lg drop-shadow-neon"
+        >
+          Sign Up
+        </button>
+      </form>
+
+      <p class="mt-6 text-center text-green-400 text-sm">
+        Already have an account? 
+        <button id="switchToLogin" class="underline neon-text font-semibold hover:text-green-600 cursor-pointer">Sign In</button>
+      </p>
+    </div>
+  </div>
+
+
+
+
+  <!-- Animations + Toggle -->
+  <script>
+    const loginTab = document.getElementById("loginTab");
+    const signupTab = document.getElementById("signupTab");
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+    const switchToLogin = document.getElementById("switchToLogin");
+
+    function toggleForms(showLogin) {
+      if (showLogin) {
+        loginForm.classList.remove("hidden");
+        signupForm.classList.add("hidden");
+        loginTab.classList.add("tab-active");
+        loginTab.classList.remove("tab-inactive");
+        signupTab.classList.add("tab-inactive");
+        signupTab.classList.remove("tab-active");
+      } else {
+        signupForm.classList.remove("hidden");
+        loginForm.classList.add("hidden");
+        signupTab.classList.add("tab-active");
+        signupTab.classList.remove("tab-inactive");
+        loginTab.classList.add("tab-inactive");
+        loginTab.classList.remove("tab-active");
+      }
+    }
+    loginTab.addEventListener("click", () => toggleForms(true));
+    signupTab.addEventListener("click", () => toggleForms(false));
+    switchToLogin?.addEventListener("click", () => toggleForms(true));
+  </script>
+
 </body>
 </html>

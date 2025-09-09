@@ -1,73 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Text</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .container {
-            margin-top: 60px;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 900px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 40px;
-            color: #343a40;
-            font-size: 2rem;
-        }
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            background: #f1f3f5;
-            padding: 25px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            color: #495057;
-            line-height: 1.6;
-        }
-        .btn-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-        .btn {
-            margin: 0 10px;
-            padding: 10px 20px;
-            font-size: 1rem;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-        .btn-primary {
-            background-color: #007bff;
-        }
-        .btn-primary:hover, .btn-secondary:hover {
-            opacity: 0.9;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="/media/icons/doc.png" type="image/png" />
+
+  <title>Document Text - Docu Trakr</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fff;
+      color: rgb(49, 0, 111);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .primary-border {
+      border: 2px solid rgb(49, 0, 111);
+      box-shadow: 0 0 8px rgb(49, 0, 111) inset, 0 0 8px rgb(49, 0, 111);
+    }
+    .primary-bg {
+      background-color: rgb(49, 0, 111);
+    }
+    .primary-bg-light {
+      background-color: rgba(49, 0, 111, 0.1);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Document Text</h1>
-        <pre>{{ text }}</pre>
-        <div class="btn-container">
-            <a href="{% url 'process_document' %}" class="btn btn-secondary">Back to Upload</a>
-            <a href="{% url 'download_as_pdf' document_id=document_id %}" class="btn btn-primary">Download as PDF</a>
-            <a href="{% url 'download_as_docx' document_id=document_id %}" class="btn btn-primary">Download as DOCX</a>
-        </div>
-    </div>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <div class="w-full max-w-5xl bg-white primary-border rounded-2xl shadow-lg p-8">
+
+    <!-- Title -->
+    <h1 class="text-4xl font-extrabold text-center mb-8 text-primary-border">
+      📄 Document Text
+    </h1>
+
+    <!-- Document Content -->
+    <pre class="whitespace-pre-wrap break-words p-6 rounded-lg border border-primary-border shadow-inner text-gray-900 text-base leading-relaxed max-h-[60vh] overflow-auto">
+{{ text }}
+    </pre>
+
+    <!-- Buttons -->
+    <div class="flex flex-wrap justify-center gap-4 mt-8">
+      <a href="{% url 'process_document' %}"
+         class="px-6 py-3 rounded-lg border border-primary-border text-primary-border font-semibold hover:bg-primary-bg-light transition">
+        ⬅ Back
+      </a>
+      <a href="{% url 'download_as_pdf' document_id=document_id %}"
+         class="px-6 py-3 rounded-lg border border-primary-border text-primary-border font-semibold hover:bg-primary-bg-light transition">
+        ⬇ Download PDF
+      </a>
+      <a href="{% url 'download_as_docx' document_id=document_id %}"
+         class="px-6 py-3 rounded-lg border border-primary-border text-primary-border font-semibold hover:bg-primary-bg-light transition">
+        ⬇ Download DOCX
+      </a>
+    </div>
+  </div>
+
 </body>
 </html>

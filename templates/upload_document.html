@@ -1,186 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Docu Trakr - PDF, Doc, and Image to Text</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/media/icons/doc.png" type="image/png" />
+    <title>Docu Trakr</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .navbar-custom {
-            background-color: #343a40;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            color: #f8f9fa;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-        }
-
-        .card {
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            font-weight: 500;
-            color: #343a40;
-        }
-
-        .btn-primary {
-            background-color: #0069d9;
-            border-color: #0062cc;
-            font-weight: 500;
-            border-radius: 30px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        /* Fixed height for all cards */
-        .history-card {
-            min-height: 250px; /* Set a minimum height */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 500;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden; /* Truncate long text */
-        }
-
-        .table th,
-        .table td {
-            vertical-align: middle;
-        }
-
-        .table thead th {
-            background-color: #343a40;
-            color: white;
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .upload-section {
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
-
-        .history-section {
-            margin-top: 50px;
-        }
-
-        .card-body {
-            padding: 2rem;
-        }
-
-        .custom-button {
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .custom-button button {
-            padding: 10px 30px;
-        }
-
-        .alert {
-            margin-top: 20px;
-        }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f9fafb; /* Soft neutral background */
+        color: rgb(49, 0, 111);
+      }
+      .primary-color {
+        color: rgb(49, 0, 111);
+      }
+      .primary-bg {
+        background-color: rgb(49, 0, 111);
+      }
+      .primary-border {
+        border: 2px solid rgb(49, 0, 111);
+        box-shadow: 0 0 8px rgb(49, 0, 111) inset, 0 0 8px rgb(49, 0, 111);
+      }
+      .primary-hover-bg:hover {
+        background-color: rgba(49, 0, 111, 0.85);
+      }
+      .primary-hover-bg-light:hover {
+        background-color: rgba(49, 0, 111, 0.12);
+      }
+      button, a {
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      /* Alert styles */
+      .alert {
+        background-color: #e6ffed;
+        border: 1.5px solid #34d399;
+        color: #065f46;
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 2px 6px rgb(52 211 153 / 0.25);
+        font-weight: 600;
+      }
     </style>
-</head>
+  </head>
+  <body class="min-h-screen bg-gray-50 text-primary-color">
+    <header class="bg-white sticky top-0 z-50 border-b primary-border shadow-sm">
+      <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="{% url 'process_document' %}" class="text-3xl font-bold primary-color flex items-center gap-2 hover:text-indigo-700 transition">
+          <img src="/media/icons/doc.png" alt="Docu Trakr Icon" class="w-8 h-8 object-contain" />
+          Docu Trakr
+        </a>
 
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-        <center><a class="navbar-brand mx-auto" href="#">Docu Trakr</a></center>
-
-         <!-- Right-aligned content -->
-    <div class="ml-auto">
-        <!-- Check if the user is logged in -->
-        {% if user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="post" class="form-inline">
+        <div class="flex gap-4 items-center">
+          <a
+            href="{% url 'convert_to_pdf' %}"
+            class="px-4 py-2 rounded-lg primary-border primary-color primary-hover-bg-light font-bold"
+          >
+            ⬇ Convert to PDF
+          </a>
+          <a
+            href="{% url 'convert_to_doc' %}"
+            class="px-4 py-2 rounded-lg primary-border primary-color primary-hover-bg-light font-bold"
+          >
+            ⬇ Convert to DOC
+          </a>
+          {% if user.is_authenticated %}
+          <form action="{% url 'logout' %}" method="post" class="inline">
             {% csrf_token %}
-            <button type="submit" class="btn btn-outline-light">Logout</button>
+            <button
+              type="submit"
+              class="px-5 py-2 rounded-lg primary-border primary-color primary-hover-bg-light font-bold"
+            >
+              Logout
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
+
+    <!-- Upload Section -->
+    <main class="max-w-4xl mx-auto mt-14 px-6">
+      <section
+        class="bg-white rounded-2xl primary-border p-12 text-center relative overflow-hidden shadow-lg"
+      >
+        <h2 class="text-4xl font-extrabold primary-color mb-6">
+          ▮ Upload Your Document
+        </h2>
+        <p class="text-primary-color mb-10 text-lg">
+          Convert <span class="font-bold primary-color">PDF, DOCX, or Images</span> ➜ text
+        </p>
+
+        <!-- Upload Form -->
+        <form
+          action="{% url 'process_document' %}"
+          method="post"
+          enctype="multipart/form-data"
+          class="space-y-6"
+        >
+          {% csrf_token %}
+          <label
+            for="document"
+            class="block p-10 primary-border rounded-xl text-center cursor-pointer hover:primary-hover-bg-light transition"
+          >
+            {{ form.as_p }}
+            <p class="text-sm primary-color mt-2">
+              Formats: PDF, DOCX, JPG, JPEG, PNG
+            </p>
+          </label>
+          <div class="text-center">
+            <button
+              type="submit"
+              class="px-12 py-4 rounded-xl primary-bg primary-hover-bg text-white text-lg font-semibold shadow-md"
+            >
+              🚀 Convert File
+            </button>
+          </div>
         </form>
-        {% endif %}
-    </div>
-    </nav>
+      </section>
+    </main>
 
-    <div class="container upload-section">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="text-center mb-4">Upload a Document for Conversion</h4>
-
-                <!-- Dropzone form or File Upload -->
-                <form action="{% url 'process_document' %}" method="post" enctype="multipart/form-data" class="text-center">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-
-                    <div class="custom-button">
-                        <button type="submit" class="btn btn-primary btn-lg">Read File</button>
-                    </div>
-                </form>
-            </div>
+    <!-- Alerts -->
+    {% if messages %}
+    <div class="fixed inset-0 flex items-start justify-center mt-20 z-50">
+      <div class="space-y-4 w-full max-w-lg px-6">
+        {% for message in messages %}
+        <div
+          class="alert flex items-center justify-between"
+        >
+          <span>{{ message }}</span>
+          <button
+            onclick="this.parentElement.remove()"
+            class="ml-4 hover:text-red-600 font-bold"
+            aria-label="Close alert"
+          >
+            ✖
+          </button>
         </div>
+        {% endfor %}
+      </div>
     </div>
+    {% endif %}
 
-    <div class="container history-section">
-        <h2 class="text-center">Conversion History</h2>
+    <!-- History Section -->
+    <section class="max-w-6xl mx-auto mt-20 px-6 mb-20">
+      <h2 class="text-3xl primary-color text-center mb-12 font-extrabold">History ▮</h2>
+      {% if documents %}
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {% for document in documents %}
+        <div
+          class="document-item rounded-xl p-6 primary-border bg-white hover:primary-hover-bg-light transition shadow-md flex flex-col justify-between"
+        >
+          <div>
+            <h5 class="font-bold text-lg truncate primary-color flex items-center gap-2">
+              <span>📄</span> {{ document.file.name }}
+            </h5>
+            <p class="mt-1 text-sm primary-color/80">Converted ✓</p>
+            <p class="mt-1 text-xs primary-color/60">
+              Uploaded on {{ document.created_at|date:"F j, Y, g:i A" }}
+            </p>
+          </div>
 
-        {% if messages %}
-        <div class="alert alert-success">
-            {% for message in messages %}
-            {{ message }}
-            {% endfor %}
+          <div class="flex items-center gap-3 mt-6">
+            <a
+              href="{% url 'view_document' document.id %}"
+              class="flex-1 px-4 py-2 rounded-lg primary-border primary-bg primary-hover-bg text-white font-semibold text-center"
+            >
+              🔍 View
+            </a>
+            <form
+              method="post"
+              action="{% url 'delete_document' document.id %}"
+              class="inline delete-document"
+            >
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold shadow text-sm transition"
+              >
+                🗑 Delete
+              </button>
+            </form>
+          </div>
         </div>
-        {% endif %}
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-center primary-color mt-6">No records found...</p>
+      {% endif %}
+    </section>
 
-        <!-- Document History in Fixed Size Cards -->
-        <div class="row">
-            {% for document in documents %}
-            <div class="col-md-6 col-lg-4 history-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Document: {{ document.file.name }}</h5>
-                        <p class="card-text">Converted Text Available</p>
-                        <p class="card-text">
-                            <small class="text-muted">Converted on {{ document.created_at|date:"F j, Y, g:i A" }}</small>
-                        </p>
-                        <a href="{% url 'view_document' document.id %}" class="btn btn-info">View Converted</a>
+    <script>
+      // Asynchronous delete to prevent reload and update UI dynamically
+      document.querySelectorAll('form.delete-document').forEach((form) => {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          if (!confirm('Are you sure you want to 🗑 delete this document?')) return;
 
-                        <form method="post" action="{% url 'delete_document' document.id %}" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('Are you sure you want to delete this document?');">Delete</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+          try {
+            const response = await fetch(form.action, {
+              method: 'POST',
+              headers: {
+                'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Accept': 'application/json',
+              },
+            });
 
-    <!-- Bootstrap JS and Dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-</body>
-
+            if (response.ok) {
+              // Remove the document element from the DOM
+              form.closest('.document-item').remove();
+            } else {
+              alert('Failed to delete document. Please try again.');
+            }
+          } catch (error) {
+            alert('Error communicating with server. Please try again.');
+            console.error(error);
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
